@@ -137,8 +137,24 @@ const funFacts = {
 };
 
 /*********************************************
+ *   DOM ELEMENTS
+ *********************************************/
+const questionElement = document.getElementById("question");
+const answersElement = document.getElementById("answers");
+const nextButton = document.getElementById("next-btn");
+const progressBar = document.getElementById("progress-bar");
+const quizContainer = document.querySelector(".quiz-container");
+
+/*********************************************
  *   QUIZ LOGIC
  *********************************************/
+
+/** Shuffles the questions array */
+function shuffleQuestions() {
+  questions.sort(() => Math.random() - 0.5);
+}
+
+/** Loads the current question and possible answers */
 function loadQuestion() {
   const questionData = questions[currentQuestion];
   questionElement.textContent = questionData.question;
@@ -156,6 +172,7 @@ function loadQuestion() {
   updateProgress();
 }
 
+/** Handles answer selection */
 function selectAnswer(event, noodType) {
   results[noodType]++;
   nextButton.disabled = false;
@@ -166,6 +183,7 @@ function selectAnswer(event, noodType) {
   event.target.classList.add("selected");
 }
 
+/** Moves to the next question or shows the result */
 function nextQuestion() {
   currentQuestion++;
   if (currentQuestion >= questions.length) {
@@ -175,11 +193,13 @@ function nextQuestion() {
   }
 }
 
+/** Updates the progress bar */
 function updateProgress() {
   const progress = ((currentQuestion + 1) / questions.length) * 100;
   progressBar.style.width = `${progress}%`;
 }
 
+/** Displays the result */
 function showResult() {
   const resultContainer = document.getElementById("result");
   const quizContainer = document.getElementById("quiz");
@@ -192,8 +212,8 @@ function showResult() {
     results[a] > results[b] ? a : b
   );
 
-  resultText.textContent = dominantNood;
-  resultDescription.textContent = `Congratulations! You are a ${dominantNood}, representing its unique qualities.`;
+  resultText.textContent = dominantNood; // No extra "a"
+  resultDescription.textContent = `Congratulations! You are ${dominantNood}, representing its unique qualities.`;
   resultImage.src = `${dominantNood.toLowerCase().replace(" ", "-")}.png`;
   funFactsElement.textContent = funFacts[dominantNood];
 
@@ -201,6 +221,7 @@ function showResult() {
   resultContainer.style.display = "block";
 }
 
+/** Restarts the quiz */
 function restartQuiz() {
   currentQuestion = 0;
   results = {
@@ -211,10 +232,12 @@ function restartQuiz() {
     "Air Nood": 0,
     "Light Nood": 0,
   };
-
   document.getElementById("result").style.display = "none";
   document.getElementById("quiz").style.display = "block";
   loadQuestion();
 }
 
+/*********************************************
+ *  INITIALIZE THE QUIZ
+ *********************************************/
 loadQuestion();
