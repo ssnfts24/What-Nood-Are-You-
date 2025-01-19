@@ -1,4 +1,4 @@
-/* General Styling */
+/* General Styles */
 body {
   font-family: Arial, sans-serif;
   background: linear-gradient(145deg, #121212, #2A2A2A);
@@ -9,19 +9,16 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  overflow: hidden;
 }
 
-/* Quiz Container */
 .quiz-container {
-  text-align: center;
   background: #2A2A2A;
-  border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
   max-width: 600px;
   width: 90%;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 /* Progress Bar */
@@ -31,68 +28,40 @@ body {
   border-radius: 10px;
   height: 10px;
   margin-bottom: 10px;
-  overflow: hidden;
-  position: relative;
 }
 
 #progress-bar {
-  width: 0;
   height: 100%;
   background: #FF4500;
+  width: 0%;
   transition: width 0.3s ease;
 }
 
 #progress-text {
-  margin-top: 5px;
-  font-size: 14px;
+  margin-top: 10px;
   color: #FFD700;
+  font-size: 14px;
 }
 
 /* Buttons */
 button {
   padding: 10px 20px;
-  font-size: 16px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #FF4500;
-  color: white;
   margin: 10px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  background: #FF4500;
+  color: white;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #FF6347;
-  transform: translateY(-2px);
+  background: #FF6347;
 }
 
 button:disabled {
-  background-color: #555;
+  background: #555;
   cursor: not-allowed;
-}
-
-/* Answer Buttons */
-#answers button {
-  display: block;
-  margin: 10px auto;
-  width: 80%;
-  font-size: 14px;
-  background-color: #444;
-  color: #FFD700;
-  border: 2px solid #FFD700;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-#answers button:hover {
-  background-color: #FFD700;
-  color: #2A2A2A;
-}
-
-#answers button.selected {
-  background-color: #FFD700;
-  color: #2A2A2A;
-  font-weight: bold;
 }
 
 /* Result Section */
@@ -100,22 +69,19 @@ button:disabled {
   max-width: 150px;
   margin-top: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .result-buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin-top: 15px;
 }
 
 #home-link {
+  display: block;
   margin-top: 15px;
-  font-size: 16px;
-  color: #32CD32;
+  color: #FFD700;
   text-decoration: none;
 }
 
 #home-link:hover {
-  color: #45E345;
+  color: #FF4500;
 }
