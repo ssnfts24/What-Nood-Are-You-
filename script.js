@@ -13,14 +13,41 @@ const questions = [
       Light: "Light Nood",
     },
   },
-  /* Add more questions with fun and creative scenarios */
+  {
+    question: "How do you approach challenges?",
+    answers: {
+      Boldly: "Fire Nood",
+      Steadily: "Earth Nood",
+      Strategically: "Shadow Nood",
+      Adaptively: "Water Nood",
+      Freely: "Air Nood",
+      Optimistically: "Light Nood",
+    },
+  },
 ];
 
+const funFacts = {
+  "Fire Nood": "Fire Noods are passionate and driven, embodying energy and transformation.",
+  "Earth Nood": "Earth Noods are grounded, reliable, and resilient in their determination.",
+  "Shadow Nood": "Shadow Noods are intelligent and thrive in complex situations.",
+  "Water Nood": "Water Noods are adaptive, empathetic, and flow gracefully through challenges.",
+  "Air Nood": "Air Noods are imaginative, creative, and free-spirited.",
+  "Light Nood": "Light Noods radiate positivity and bring hope to others.",
+};
+
+const imageUrls = {
+  "Fire Nood": "https://example.com/fire-nood.png",
+  "Earth Nood": "https://example.com/earth-nood.png",
+  "Shadow Nood": "https://example.com/shadow-nood.png",
+  "Water Nood": "https://example.com/water-nood.png",
+  "Air Nood": "https://example.com/air-nood.png",
+  "Light Nood": "https://example.com/light-nood.png",
+};
+
 /*********************************************
- *         QUIZ STATE AND DATA
+ *   QUIZ LOGIC
  *********************************************/
 let currentQuestion = 0;
-let username = "";
 let results = {
   "Fire Nood": 0,
   "Earth Nood": 0,
@@ -29,28 +56,6 @@ let results = {
   "Air Nood": 0,
   "Light Nood": 0,
 };
-
-const funFacts = {
-  "Fire Nood": "Fire Noods are fierce and powerful, representing passion and transformation.",
-  "Earth Nood": "Earth Noods are grounded and stable, embodying strength and resilience.",
-  /* Add fun facts for each Nood */
-};
-
-/*********************************************
- *   QUIZ LOGIC
- *********************************************/
-function startQuiz() {
-  username = document.getElementById("username").value;
-  if (!username.trim()) {
-    alert("Please enter your name to start the quiz!");
-    return;
-  }
-
-  document.getElementById("user-input").style.display = "none";
-  document.querySelector(".progress-container").style.display = "block";
-  document.getElementById("quiz").style.display = "block";
-  loadQuestion();
-}
 
 function loadQuestion() {
   const questionData = questions[currentQuestion];
@@ -62,21 +67,16 @@ function loadQuestion() {
     const button = document.createElement("button");
     button.textContent = key;
     button.className = "answer-btn";
-    button.onclick = (event) => selectAnswer(event, value);
+    button.onclick = () => selectAnswer(value);
     answersElement.appendChild(button);
   }
 
   document.getElementById("next-btn").disabled = true;
-  updateProgress();
 }
 
-function selectAnswer(event, noodType) {
+function selectAnswer(noodType) {
   results[noodType]++;
   document.getElementById("next-btn").disabled = false;
-  document.querySelectorAll(".answer-btn").forEach((btn) =>
-    btn.classList.remove("selected")
-  );
-  event.target.classList.add("selected");
 }
 
 function nextQuestion() {
@@ -88,30 +88,20 @@ function nextQuestion() {
   }
 }
 
-function updateProgress() {
-  const progress = ((currentQuestion + 1) / questions.length) * 100;
-  document.getElementById("progress-bar").style.width = `${progress}%`;
-}
-
-/*********************************************
- *        DISPLAY RESULTS
- *********************************************/
 function showResult() {
   const dominantNood = Object.keys(results).reduce((a, b) =>
     results[a] > results[b] ? a : b
   );
 
-  document.getElementById("username-output").textContent = username;
   document.getElementById("nood-result").textContent = dominantNood;
-  document.getElementById("result-description").textContent = `As a ${dominantNood}, you are truly unique and extraordinary!`;
+  document.getElementById("result-description").textContent = `You are a ${dominantNood}, representing unique qualities.`;
+  document.getElementById("result-image").src = imageUrls[dominantNood];
   document.getElementById("fun-facts").textContent = funFacts[dominantNood];
+
   document.getElementById("quiz").style.display = "none";
   document.getElementById("result").style.display = "block";
 }
 
-/*********************************************
- *        RESTART QUIZ
- *********************************************/
 function restartQuiz() {
   currentQuestion = 0;
   results = {
@@ -122,8 +112,10 @@ function restartQuiz() {
     "Air Nood": 0,
     "Light Nood": 0,
   };
+
   document.getElementById("result").style.display = "none";
-  document.getElementById("quiz").style.display = "none";
-  document.getElementById("user-input").style.display = "block";
-  document.querySelector(".progress-container").style.display = "none";
+  document.getElementById("quiz").style.display = "block";
+  loadQuestion();
 }
+
+loadQuestion();
