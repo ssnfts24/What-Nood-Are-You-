@@ -1,41 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>What Nood Are You?</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Nood Are You?</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="quiz-container">
-    <h1>What Nood Are You?</h1>
-
-    <!-- Progress Container -->
-    <div class="progress-container">
-      <div id="progress-bar"></div>
-      <p id="progress-text" aria-live="polite"></p>
+    <div class="quiz-container water-theme">
+        <h1>What Nood Are You?</h1>
+        <div class="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+        <div id="quiz">
+            <p id="question"></p>
+            <div id="answers" class="answer-options"></div>
+        </div>
+        <div id="result" style="display: none;">
+            <h2>You are a <span id="nood-result"></span> Nood!</h2>
+            <p id="result-description"></p>
+            <img id="result-image" src="" alt="Your Nood" />
+            <div id="share-buttons">
+                <button id="twitter-share">Share on Twitter</button>
+            </div>
+        </div>
+        <button id="next-btn" onclick="nextQuestion()" disabled>Next</button>
     </div>
-
-    <!-- Quiz Section -->
-    <section id="quiz">
-      <p id="question" aria-live="polite"></p>
-      <div id="answers" aria-live="polite"></div>
-      <button id="next-btn" onclick="nextQuestion()" disabled>Next</button>
-    </section>
-
-    <!-- Result Section -->
-    <section id="result" style="display: none;">
-      <h2 aria-live="polite">You are a <span id="nood-result"></span>!</h2>
-      <p id="result-description"></p>
-      <p id="fun-facts"></p>
-      <img id="result-image" src="" alt="Your Nood Element" />
-      <div class="result-buttons">
-        <button id="restart-btn" onclick="restartQuiz()">Restart Quiz</button>
-        <a href="https://free-noods.com/" id="home-link">Back to Home</a>
-      </div>
-    </section>
-  </main>
-
-  <script src="script.js"></script>
+    <audio id="background-music" loop>
+        <source src="background-music.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="button-click-sound">
+        <source src="click-sound.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="result-sound">
+        <source src="result-sound.mp3" type="audio/mpeg">
+    </audio>
+    <script src="script.js"></script>
 </body>
 </html>
