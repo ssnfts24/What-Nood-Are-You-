@@ -1,87 +1,124 @@
-/* General Styles */
-body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(145deg, #121212, #2A2A2A);
-  color: #FFD700;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+/*********************************************
+ *            QUIZ QUESTIONS
+ *********************************************/
+const questions = [
+  {
+    question: "What is your favorite element?",
+    answers: {
+      Fire: "Fire Nood",
+      Earth: "Earth Nood",
+      Shadow: "Shadow Nood",
+      Water: "Water Nood",
+      Air: "Air Nood",
+      Light: "Light Nood",
+    },
+  },
+  {
+    question: "How do you approach challenges?",
+    answers: {
+      Boldly: "Fire Nood",
+      Steadily: "Earth Nood",
+      Strategically: "Shadow Nood",
+      Adaptively: "Water Nood",
+      Freely: "Air Nood",
+      Optimistically: "Light Nood",
+    },
+  },
+  // Add more questions here if desired
+];
+
+/*********************************************
+ *         QUIZ STATE AND DATA
+ *********************************************/
+let currentQuestion = 0;
+let results = {
+  "Fire Nood": 0,
+  "Earth Nood": 0,
+  "Shadow Nood": 0,
+  "Water Nood": 0,
+  "Air Nood": 0,
+  "Light Nood": 0,
+};
+
+const funFacts = {
+  "Fire Nood": "Fire Noods are fierce and powerful, representing passion and transformation.",
+  "Earth Nood": "Earth Noods are grounded and strong, embodying stability and resilience.",
+  "Shadow Nood": "Shadow Noods are strategic and mysterious, thriving in complexity.",
+  "Water Nood": "Water Noods are adaptive and empathetic, flowing gracefully through challenges.",
+  "Air Nood": "Air Noods are free-spirited and imaginative, soaring above limitations.",
+  "Light Nood": "Light Noods are radiant and optimistic, bringing hope and positivity.",
+};
+
+const imageUrls = {
+  "Fire Nood": "https://example.com/fire-nood.jpg",
+  "Earth Nood": "https://example.com/earth-nood.jpg",
+  "Shadow Nood": "https://example.com/shadow-nood.jpg",
+  "Water Nood": "https://example.com/water-nood.jpg",
+  "Air Nood": "https://example.com/air-nood.jpg",
+  "Light Nood": "https://example.com/light-nood.jpg",
+};
+
+/*********************************************
+ *   QUIZ LOGIC
+ *********************************************/
+function loadQuestion() {
+  const questionData = questions[currentQuestion];
+  document.getElementById("question").textContent = questionData.question;
+  const answersElement = document.getElementById("answers");
+  answersElement.innerHTML = "";
+
+  Object.entries(questionData.answers).forEach(([key, value]) => {
+    const button = document.createElement("button");
+    button.textContent = key;
+    button.className = "answer-btn";
+    button.onclick = () => selectAnswer(value);
+    answersElement.appendChild(button);
+  });
+
+  document.getElementById("next-btn").disabled = true;
+  updateProgress();
 }
 
-.quiz-container {
-  background: #2A2A2A;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 600px;
-  width: 90%;
-  text-align: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+function selectAnswer(noodType) {
+  results[noodType]++;
+  document.getElementById("next-btn").disabled = false;
 }
 
-/* Progress Bar */
-.progress-container {
-  width: 100%;
-  background: #444;
-  border-radius: 10px;
-  height: 10px;
-  margin-bottom: 10px;
+function nextQuestion() {
+  currentQuestion++;
+  if (currentQuestion >= questions.length) {
+    showResult();
+  } else {
+    loadQuestion();
+  }
 }
 
-#progress-bar {
-  height: 100%;
-  background: #FF4500;
-  width: 0%;
-  transition: width 0.3s ease;
+function updateProgress() {
+  const progress = ((currentQuestion + 1) / questions.length) * 100;
+  document.getElementById("progress-bar").style.width = `${progress}%`;
+  document.getElementById("progress-text").textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
 }
 
-#progress-text {
-  margin-top: 10px;
-  color: #FFD700;
-  font-size: 14px;
+function showResult() {
+  const dominantNood = Object.keys(results).reduce((a, b) => (results[a] > results[b] ? a : b));
+  document.getElementById("nood-result").textContent = dominantNood;
+  document.getElementById("result-description").textContent = `Congratulations! You are a ${dominantNood}.`;
+  document.getElementById("result-image").src = imageUrls[dominantNood];
+  document.getElementById("fun-facts").textContent = funFacts[dominantNood];
+
+  document.getElementById("quiz").style.display = "none";
+  document.getElementById("result").style.display = "block";
 }
 
-/* Buttons */
-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 10px;
-  background: #FF4500;
-  color: white;
-  transition: background-color 0.3s ease;
+function restartQuiz() {
+  currentQuestion = 0;
+  Object.keys(results).forEach((key) => (results[key] = 0));
+  document.getElementById("quiz").style.display = "block";
+  document.getElementById("result").style.display = "none";
+  loadQuestion();
 }
 
-button:hover {
-  background: #FF6347;
-}
-
-button:disabled {
-  background: #555;
-  cursor: not-allowed;
-}
-
-/* Result Section */
-#result img {
-  max-width: 150px;
-  margin-top: 20px;
-  border-radius: 10px;
-}
-
-.result-buttons {
-  margin-top: 15px;
-}
-
-#home-link {
-  display: block;
-  margin-top: 15px;
-  color: #FFD700;
-  text-decoration: none;
-}
-
-#home-link:hover {
-  color: #FF4500;
-}
+/*********************************************
+ *        INITIALIZE QUIZ
+ *********************************************/
+loadQuestion();
