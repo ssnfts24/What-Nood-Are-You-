@@ -128,80 +128,22 @@ let results = {
 };
 
 const funFacts = {
-  "Fire Nood":
-    "Fire Noods are fierce and powerful, representing passion and transformation.",
-  "Ice Nood":
-    "Ice Noods are calm and collected, embodying balance and precision.",
-  "Shadow Nood":
-    "Shadow Noods are mysterious and strategic, thriving in complexity and subtlety.",
-  "Water Nood":
-    "Water Noods are adaptive and empathetic, flowing effortlessly through challenges.",
-  "Air Nood":
-    "Air Noods are free-spirited and creative, soaring above limitations.",
-  "Light Nood":
-    "Light Noods are radiant and optimistic, bringing hope and inspiration to others.",
+  "Fire Nood": "Fire Noods are fierce and powerful, representing passion and transformation.",
+  "Ice Nood": "Ice Noods are calm and collected, embodying balance and precision.",
+  "Shadow Nood": "Shadow Noods are mysterious and strategic, thriving in complexity and subtlety.",
+  "Water Nood": "Water Noods are adaptive and empathetic, flowing effortlessly through challenges.",
+  "Air Nood": "Air Noods are free-spirited and creative, soaring above limitations.",
+  "Light Nood": "Light Noods are radiant and optimistic, bringing hope and inspiration to others.",
 };
-
-/*********************************************
- *   DOM ELEMENTS
- *********************************************/
-const questionElement = document.getElementById("question");
-const answersElement = document.getElementById("answers");
-const nextButton = document.getElementById("next-btn");
-const progressBar = document.getElementById("progress-bar");
-const quizContainer = document.querySelector(".quiz-container");
-
-/*********************************************
- *   UTILITY FUNCTIONS
- *********************************************/
-function playSound(src) {
-  // If you have sound files, place them in your project folder
-  // and replace "select-sound.mp3" & "result-sound.mp3" with your paths
-  const sound = new Audio(src);
-  sound.play();
-}
-
-function animateElement(element, animationClass) {
-  element.classList.add(animationClass);
-  setTimeout(() => element.classList.remove(animationClass), 500);
-}
-
-function setDynamicBackground(noodType) {
-  const backgrounds = {
-    "Fire Nood": "linear-gradient(145deg, #8B0000, #FF4500)",
-    "Ice Nood": "linear-gradient(145deg, #00BFFF, #4682B4)",
-    "Shadow Nood": "linear-gradient(145deg, #2C2C2C, #4B0082)",
-    "Water Nood": "linear-gradient(145deg, #1E90FF, #4682B4)",
-    "Air Nood": "linear-gradient(145deg, #87CEEB, #ADD8E6)",
-    "Light Nood": "linear-gradient(145deg, #FFD700, #FFFFE0)",
-  };
-  document.body.style.background = backgrounds[noodType];
-}
 
 /*********************************************
  *   QUIZ LOGIC
  *********************************************/
-
-/**
- * Shuffles the questions array so each quiz run is random.
- */
-function shuffleQuestions() {
-  // Simple random sort
-  questions.sort(() => Math.random() - 0.5);
-}
-
-/**
- * Loads the current question and possible answers.
- */
 function loadQuestion() {
-  // If you'd like random question order every time:
-  // shuffleQuestions();  // <--- uncomment for a random quiz order on every load
   const questionData = questions[currentQuestion];
-
   questionElement.textContent = questionData.question;
   answersElement.innerHTML = "";
 
-  // Create answer buttons
   for (const [key, value] of Object.entries(questionData.answers)) {
     const button = document.createElement("button");
     button.textContent = key;
@@ -212,33 +154,18 @@ function loadQuestion() {
 
   nextButton.disabled = true;
   updateProgress();
-  animateElement(questionElement, "fade-in");
 }
 
-/**
- * Handles the selection of an answer.
- */
 function selectAnswer(event, noodType) {
-  try {
-    results[noodType]++;
-    nextButton.disabled = false;
+  results[noodType]++;
+  nextButton.disabled = false;
 
-    // Highlight the selected button
-    document.querySelectorAll(".answer-btn").forEach((btn) =>
-      btn.classList.remove("selected")
-    );
-    event.target.classList.add("selected");
-
-    // Play a selection sound if desired
-    // playSound("select-sound.mp3");
-  } catch (error) {
-    console.error("Error in selectAnswer:", error);
-  }
+  document.querySelectorAll(".answer-btn").forEach((btn) =>
+    btn.classList.remove("selected")
+  );
+  event.target.classList.add("selected");
 }
 
-/**
- * Advances the quiz to the next question or shows the result.
- */
 function nextQuestion() {
   currentQuestion++;
   if (currentQuestion >= questions.length) {
@@ -248,20 +175,11 @@ function nextQuestion() {
   }
 }
 
-/**
- * Updates the progress bar and text.
- */
 function updateProgress() {
   const progress = ((currentQuestion + 1) / questions.length) * 100;
   progressBar.style.width = `${progress}%`;
-
-  const progressText = document.getElementById("progress-text");
-  progressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
 }
 
-/**
- * Displays the final result and related info (fun facts, images).
- */
 function showResult() {
   const resultContainer = document.getElementById("result");
   const quizContainer = document.getElementById("quiz");
@@ -270,35 +188,19 @@ function showResult() {
   const resultImage = document.getElementById("result-image");
   const funFactsElement = document.getElementById("fun-facts");
 
-  // Determine which Nood type has the highest score
   const dominantNood = Object.keys(results).reduce((a, b) =>
     results[a] > results[b] ? a : b
   );
 
-  // Populate the result container
-  resultText.textContent = `a ${dominantNood}`;
-  resultDescription.textContent = `Congratulations! You are ${dominantNood} Nood, representing its unique qualities.`;
+  resultText.textContent = dominantNood;
+  resultDescription.textContent = `Congratulations! You are a ${dominantNood}, representing its unique qualities.`;
   resultImage.src = `${dominantNood.toLowerCase().replace(" ", "-")}.png`;
   funFactsElement.textContent = funFacts[dominantNood];
 
-  // Hide quiz, show result
   quizContainer.style.display = "none";
   resultContainer.style.display = "block";
-
-  // Optional result sound
-  // playSound("result-sound.mp3");
-
-  animateElement(resultContainer, "fade-in");
-  setDynamicBackground(dominantNood);
 }
 
-/*********************************************
- *  RESTART AND SHARE FUNCTIONS
- *********************************************/
-
-/**
- * Resets the quiz so the user can take it again.
- */
 function restartQuiz() {
   currentQuestion = 0;
   results = {
@@ -312,29 +214,7 @@ function restartQuiz() {
 
   document.getElementById("result").style.display = "none";
   document.getElementById("quiz").style.display = "block";
-
-  // Reset the body background
-  document.body.style.background = "linear-gradient(145deg, #121212, #2A2A2A)";
-
   loadQuestion();
 }
 
-/**
- * Allows the user to share their result on Twitter.
- */
-function shareResult() {
-  const dominantNood = Object.keys(results).reduce((a, b) =>
-    results[a] > results[b] ? a : b
-  );
-
-  const shareText = `I just found out I'm ${dominantNood}! Take the quiz to discover your Nood: https://your-quiz-link.com`;
-  const shareURL = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-    shareText
-  )}`;
-  window.open(shareURL, "_blank");
-}
-
-/*********************************************
- *  INITIALIZE THE QUIZ
- *********************************************/
 loadQuestion();
