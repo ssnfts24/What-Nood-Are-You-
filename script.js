@@ -82,6 +82,8 @@ let results = {
   "Air Nood": 0,
   "Light Nood": 0,
 };
+let timer;
+const timeLimit = 15;
 
 const funFacts = {
   "Fire Nood": "Fire Noods are fierce and powerful, representing passion and transformation.",
@@ -104,7 +106,12 @@ const imageUrls = {
 /*********************************************
  *   QUIZ LOGIC
  *********************************************/
+function shuffleQuestions() {
+  questions.sort(() => Math.random() - 0.5);
+}
+
 function loadQuestion() {
+  clearInterval(timer);
   const questionData = questions[currentQuestion];
   document.getElementById("question").textContent = questionData.question;
   const answersElement = document.getElementById("answers");
@@ -119,6 +126,7 @@ function loadQuestion() {
   }
 
   document.getElementById("next-btn").disabled = true;
+  startTimer();
   updateProgress();
 }
 
@@ -131,6 +139,7 @@ function selectAnswer(event, noodType) {
 }
 
 function nextQuestion() {
+  clearInterval(timer);
   currentQuestion++;
   if (currentQuestion >= questions.length) {
     showResult();
@@ -145,9 +154,25 @@ function updateProgress() {
   document.getElementById("progress-text").textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
 }
 
-/*********************************************
- *        DISPLAY RESULTS
- *********************************************/
+function startTimer() {
+  let timeLeft = timeLimit;
+  const timerElement = document.createElement("div");
+  timerElement.id = "timer";
+  timerElement.textContent = `Time Left: ${timeLeft}s`;
+  document.getElementById("quiz").appendChild(timerElement);
+
+  timer = setInterval(() => {
+    timeLeft--;
+    timerElement.textContent = `Time Left: ${timeLeft}s`;
+
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      alert("Time's up! Moving to the next question.");
+      nextQuestion();
+    }
+  }, 1000);
+}
+
 function showResult() {
   const dominantNood = Object.keys(results).reduce((a, b) => (results[a] > results[b] ? a : b));
 
@@ -156,13 +181,18 @@ function showResult() {
   document.getElementById("result-image").src = imageUrls[dominantNood];
   document.getElementById("fun-facts").textContent = funFacts[dominantNood];
 
+  const scoreBreakdown = document.createElement("ul");
+  for (const [nood, score] of Object.entries(results)) {
+    const listItem = document.createElement("li");
+    listItem.textContent = `${nood}: ${score}`;
+    scoreBreakdown.appendChild(listItem);
+  }
+  document.getElementById("result").appendChild(scoreBreakdown);
+
   document.getElementById("quiz").style.display = "none";
   document.getElementById("result").style.display = "block";
 }
 
-/*********************************************
- *        RESTART QUIZ
- *********************************************/
 function restartQuiz() {
   currentQuestion = 0;
   results = {
@@ -176,10 +206,9 @@ function restartQuiz() {
 
   document.getElementById("result").style.display = "none";
   document.getElementById("quiz").style.display = "block";
+  shuffleQuestions();
   loadQuestion();
 }
 
-/*********************************************
- *        INITIALIZE QUIZ
- *********************************************/
+shuffleQuestions();
 loadQuestion();
