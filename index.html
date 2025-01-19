@@ -6,26 +6,18 @@
   <title>What Nood Are You?</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
   <main class="quiz-container">
     <h1>What Nood Are You?</h1>
 
-    <!-- User Input Section -->
-    <div id="user-input" class="input-container">
-      <p>Enter your name to begin the journey!</p>
-      <input type="text" id="username" placeholder="Enter your name" />
-      <button onclick="startQuiz()">Start Quiz</button>
-    </div>
-
     <!-- Progress Container -->
-    <div class="progress-container" style="display: none;">
+    <div class="progress-container">
       <div id="progress-bar"></div>
       <p id="progress-text" aria-live="polite"></p>
     </div>
 
     <!-- Quiz Section -->
-    <section id="quiz" style="display: none;">
+    <section id="quiz">
       <p id="question" aria-live="polite"></p>
       <div id="answers" aria-live="polite"></div>
       <button id="next-btn" onclick="nextQuestion()" disabled>Next</button>
@@ -33,22 +25,16 @@
 
     <!-- Result Section -->
     <section id="result" style="display: none;">
-      <h2 aria-live="polite">
-        Congratulations, <span id="username-output"></span>! You are a <span id="nood-result"></span>!
-      </h2>
+      <h2 aria-live="polite">You are a <span id="nood-result"></span>!</h2>
       <p id="result-description"></p>
       <p id="fun-facts"></p>
       <img id="result-image" src="" alt="Your Nood Element" />
-
       <div class="result-buttons">
         <button id="restart-btn" onclick="restartQuiz()">Restart Quiz</button>
-        <button id="share-btn" onclick="shareResult()">Share Your Result</button>
         <a href="https://free-noods.com/" id="home-link">Back to Home</a>
       </div>
     </section>
   </main>
-
-  <!-- Main Script -->
   <script src="script.js"></script>
 </body>
 </html>
