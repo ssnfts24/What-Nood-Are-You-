@@ -1,8 +1,5 @@
-/* =======================
-   General Page Styling
-   ======================= */
 body {
-  font-family: "Comic Sans MS", Arial, sans-serif;
+  font-family: Arial, sans-serif;
   background: linear-gradient(145deg, #121212, #2a2a2a);
   color: #ffd700;
   margin: 0;
@@ -11,41 +8,8 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  overflow: hidden;
 }
 
-/* =======================
-   Input Container
-   ======================= */
-.input-container {
-  text-align: center;
-}
-
-.input-container input {
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 2px solid #ffd700;
-  margin-right: 10px;
-}
-
-.input-container button {
-  background-color: #32cd32;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.input-container button:hover {
-  background-color: #45e345;
-}
-
-/* =======================
-   Quiz Container
-   ======================= */
 .quiz-container {
   text-align: center;
   background: #2a2a2a;
@@ -54,7 +18,71 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
   max-width: 600px;
   width: 90%;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Other CSS is the same as the previous reference code */
+.progress-container {
+  width: 100%;
+  background: #444;
+  border-radius: 10px;
+  height: 10px;
+  margin-bottom: 10px;
+}
+
+#progress-bar {
+  width: 0;
+  height: 100%;
+  background: #ff4500;
+  transition: width 0.3s ease;
+}
+
+#answers button {
+  display: block;
+  margin: 10px auto;
+  width: 80%;
+  font-size: 14px;
+  background-color: #444;
+  color: #ffd700;
+  border: 2px solid #ffd700;
+  border-radius: 5px;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+#answers button:hover {
+  background-color: #ffd700;
+  color: #2a2a2a;
+}
+
+#answers button.selected {
+  background-color: #ffd700;
+  color: #2a2a2a;
+  font-weight: bold;
+  border-color: #ffd700;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #ff4500;
+  color: white;
+  margin: 10px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #ff6347;
+}
+
+button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+#result img {
+  max-width: 150px;
+  margin-top: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
