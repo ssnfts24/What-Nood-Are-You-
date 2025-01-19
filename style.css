@@ -49,7 +49,7 @@ body {
 }
 
 #progress-text {
-  margin-top: 5px;
+  margin-top: 0px;
   font-size: 14px;
   color: #FFD700;
 }
