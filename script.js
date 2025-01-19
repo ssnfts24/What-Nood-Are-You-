@@ -1,145 +1,102 @@
-/*********************************************
- *            QUIZ QUESTIONS
- *********************************************/
 const questions = [
-  {
-    question: "What is your favorite element?",
-    answers: {
-      Fire: "Fire Nood",
-      Earth: "Earth Nood",
-      Shadow: "Shadow Nood",
-      Water: "Water Nood",
-      Air: "Air Nood",
-      Light: "Light Nood",
+    {
+        question: "What is your favorite natural element?",
+        answers: ["Water", "Fire", "Earth", "Air", "Shadow", "Light"],
+        theme: ["water-theme", "fire-theme", "earth-theme", "air-theme", "shadow-theme", "light-theme"]
     },
-  },
-  {
-    question: "How do you approach challenges?",
-    answers: {
-      Boldly: "Fire Nood",
-      Steadily: "Earth Nood",
-      Strategically: "Shadow Nood",
-      Adaptively: "Water Nood",
-      Freely: "Air Nood",
-      Optimistically: "Light Nood",
+    {
+        question: "What is your preferred combat style?",
+        answers: ["Swift and precise", "Raw power", "Defensive and enduring", "Strategic and adaptable", "Stealthy and cunning", "Radiant and inspiring"],
     },
-  },
-  {
-    question: "What is your greatest strength?",
-    answers: {
-      Power: "Fire Nood",
-      Resilience: "Earth Nood",
-      Intelligence: "Shadow Nood",
-      Creativity: "Air Nood",
-      Empathy: "Water Nood",
-      Hope: "Light Nood",
+    {
+        question: "What motivates you most?",
+        answers: ["Peace and balance", "Passion and ambition", "Stability and loyalty", "Freedom and exploration", "Mystery and secrecy", "Justice and hope"],
     },
-  },
-  {
-    question: "Which environment feels like home?",
-    answers: {
-      Volcano: "Fire Nood",
-      Forest: "Earth Nood",
-      Cave: "Shadow Nood",
-      Ocean: "Water Nood",
-      Sky: "Air Nood",
-      Meadow: "Light Nood",
-    },
-  },
 ];
 
-/*********************************************
- *         QUIZ STATE AND DATA
- *********************************************/
-let currentQuestion = 0;
-let results = {
-  "Fire Nood": 0,
-  "Earth Nood": 0,
-  "Shadow Nood": 0,
-  "Water Nood": 0,
-  "Air Nood": 0,
-  "Light Nood": 0,
+const results = {
+    Water: { description: "Calm and adaptable...", image: "water-nood.png" },
+    Fire: { description: "Fierce and passionate...", image: "fire-nood.png" },
+    Earth: { description: "Strong and reliable...", image: "earth-nood.png" },
+    Air: { description: "Free-spirited and versatile...", image: "air-nood.png" },
+    Shadow: { description: "Mysterious and stealthy...", image: "shadow-nood.png" },
+    Light: { description: "Radiant and inspiring...", image: "light-nood.png" },
 };
 
-const funFacts = {
-  "Fire Nood": "Fire Noods are passionate and energetic.",
-  "Earth Nood": "Earth Noods are grounded and dependable.",
-  "Shadow Nood": "Shadow Noods are mysterious and insightful.",
-  "Water Nood": "Water Noods are adaptable and empathetic.",
-  "Air Nood": "Air Noods are creative and free-spirited.",
-  "Light Nood": "Light Noods are optimistic and uplifting.",
-};
+let currentQuestionIndex = 0;
+let userChoices = [];
 
-const imageUrls = {
-  "Fire Nood": "https://example.com/fire.jpg",
-  "Earth Nood": "https://example.com/earth.jpg",
-  "Shadow Nood": "https://example.com/shadow.jpg",
-  "Water Nood": "https://example.com/water.jpg",
-  "Air Nood": "https://example.com/air.jpg",
-  "Light Nood": "https://example.com/light.jpg",
-};
-
-/*********************************************
- *   QUIZ LOGIC
- *********************************************/
 function loadQuestion() {
-  const questionData = questions[currentQuestion];
-  document.getElementById("question").textContent = questionData.question;
-  const answersElement = document.getElementById("answers");
-  answersElement.innerHTML = "";
+    const questionElement = document.getElementById("question");
+    const answersElement = document.getElementById("answers");
+    const nextButton = document.getElementById("next-btn");
+    const quizContainer = document.querySelector(".quiz-container");
 
-  for (const [key, value] of Object.entries(questionData.answers)) {
-    const button = document.createElement("button");
-    button.textContent = key;
-    button.className = "answer-btn";
-    button.onclick = () => selectAnswer(value);
-    answersElement.appendChild(button);
-  }
+    // Update theme
+    quizContainer.className = `quiz-container ${questions[currentQuestionIndex].theme || ''}`;
 
-  document.getElementById("next-btn").disabled = true;
-  updateProgress();
-}
+    // Reset answers and button
+    answersElement.innerHTML = "";
+    nextButton.disabled = true;
 
-function selectAnswer(noodType) {
-  results[noodType]++;
-  document.getElementById("next-btn").disabled = false;
+    // Load current question
+    const currentQuestion = questions[currentQuestionIndex];
+    questionElement.textContent = currentQuestion.question;
+
+    // Add answers
+    currentQuestion.answers.forEach((answer, index) => {
+        const button = document.createElement("button");
+        button.textContent = answer;
+        button.className = "answer-btn";
+        button.onclick = () => {
+            userChoices[currentQuestionIndex] = answer;
+            document.querySelectorAll(".answer-btn").forEach(btn => btn.classList.remove("selected"));
+            button.classList.add("selected");
+            nextButton.disabled = false;
+        };
+        answersElement.appendChild(button);
+    });
+
+    updateProgress();
 }
 
 function nextQuestion() {
-  currentQuestion++;
-  if (currentQuestion >= questions.length) {
-    showResult();
-  } else {
-    loadQuestion();
-  }
+    const quizElement = document.getElementById("quiz");
+    const resultElement = document.getElementById("result");
+
+    if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        loadQuestion();
+    } else {
+        // Show result
+        quizElement.style.display = "none";
+        resultElement.style.display = "block";
+
+        const dominantElement = determineNoodType();
+        const resultText = document.getElementById("nood-result");
+        const resultDescription = document.getElementById("result-description");
+        const resultImage = document.getElementById("result-image");
+
+        resultText.textContent = dominantElement;
+        resultDescription.textContent = results[dominantElement].description;
+        resultImage.src = results[dominantElement].image;
+
+        document.getElementById("result-sound").play();
+    }
+}
+
+function determineNoodType() {
+    const counts = userChoices.reduce((acc, choice) => {
+        acc[choice] = (acc[choice] || 0) + 1;
+        return acc;
+    }, {});
+    return Object.keys(counts).reduce((a, b) => (counts[a] > counts[b] ? a : b));
 }
 
 function updateProgress() {
-  const progress = ((currentQuestion + 1) / questions.length) * 100;
-  document.getElementById("progress-bar").style.width = `${progress}%`;
-  document.getElementById("progress-text").textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+    const progressBar = document.getElementById("progress-bar");
+    const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+    progressBar.style.width = `${progress}%`;
 }
 
-function showResult() {
-  const dominantNood = Object.keys(results).reduce((a, b) => (results[a] > results[b] ? a : b));
-  document.getElementById("nood-result").textContent = dominantNood;
-  document.getElementById("result-description").textContent = `Congratulations! You are a ${dominantNood}.`;
-  document.getElementById("result-image").src = imageUrls[dominantNood];
-  document.getElementById("fun-facts").textContent = funFacts[dominantNood];
-
-  document.getElementById("quiz").style.display = "none";
-  document.getElementById("result").style.display = "block";
-}
-
-function restartQuiz() {
-  currentQuestion = 0;
-  Object.keys(results).forEach((key) => (results[key] = 0));
-  document.getElementById("quiz").style.display = "block";
-  document.getElementById("result").style.display = "none";
-  loadQuestion();
-}
-
-/*********************************************
- *        INITIALIZE QUIZ
- *********************************************/
 loadQuestion();
