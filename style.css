@@ -1,88 +1,214 @@
+/* =======================
+   General Page Styling
+   ======================= */
 body {
   font-family: Arial, sans-serif;
-  background: linear-gradient(145deg, #121212, #2a2a2a);
-  color: #ffd700;
+  background: linear-gradient(145deg, #121212, #2A2A2A);
+  color: #FFD700;
   margin: 0;
   padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  overflow: hidden; /* Prevents scroll for a fixed viewport */
 }
 
+/* =======================
+   Quiz Container
+   ======================= */
 .quiz-container {
   text-align: center;
-  background: #2a2a2a;
+  background: #2A2A2A;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
   max-width: 600px;
   width: 90%;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* =======================
+   Progress Bar
+   ======================= */
 .progress-container {
   width: 100%;
   background: #444;
   border-radius: 10px;
   height: 10px;
   margin-bottom: 10px;
+  overflow: hidden;
+  position: relative;
 }
 
 #progress-bar {
   width: 0;
   height: 100%;
-  background: #ff4500;
+  background: #FF4500;
   transition: width 0.3s ease;
 }
 
-#answers button {
-  display: block;
-  margin: 10px auto;
-  width: 80%;
+#progress-text {
+  margin-top: 5px;
   font-size: 14px;
-  background-color: #444;
-  color: #ffd700;
-  border: 2px solid #ffd700;
-  border-radius: 5px;
-  transition: background-color 0.3s, border-color 0.3s;
+  color: #FFD700;
 }
 
-#answers button:hover {
-  background-color: #ffd700;
-  color: #2a2a2a;
-}
-
-#answers button.selected {
-  background-color: #ffd700;
-  color: #2a2a2a;
-  font-weight: bold;
-  border-color: #ffd700;
-}
-
+/* =======================
+   Buttons
+   ======================= */
 button {
   padding: 10px 20px;
   font-size: 16px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #ff4500;
+  background-color: #FF4500;
   color: white;
   margin: 10px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 button:hover {
-  background-color: #ff6347;
+  background-color: #FF6347;
+  transform: translateY(-2px);
 }
 
 button:disabled {
   background-color: #555;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
+/* =======================
+   Answer Buttons
+   ======================= */
+#answers button {
+  display: block;
+  margin: 10px auto;
+  width: 80%;
+  font-size: 14px;
+  background-color: #444;
+  color: #FFD700;
+  border: 2px solid #FFD700;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#answers button:hover {
+  background-color: #FFD700;
+  color: #2A2A2A;
+}
+
+#answers button.selected {
+  background-color: #FFD700;
+  color: #2A2A2A;
+  font-weight: bold;
+  border-color: #FFD700;
+}
+
+/* =======================
+   Result Section
+   ======================= */
 #result img {
   max-width: 150px;
   margin-top: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
 }
+
+#result img:hover {
+  transform: scale(1.1);
+}
+
+/* =======================
+   Result Buttons
+   ======================= */
+.result-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#restart-btn {
+  background-color: #4682B4;
+}
+
+#restart-btn:hover {
+  background-color: #5A9BD8;
+}
+
+#share-btn {
+  background-color: #32CD32;
+  color: white;
+}
+
+#share-btn:hover {
+  background-color: #45E345;
+}
+
+#home-link {
+  display: block;
+  margin-top: 15px;
+  font-size: 16px;
+  color: #32CD32;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+#home-link:hover {
+  color: #45E345;
+}
+
+/* =======================
+   Animations
+   ======================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* =======================
+   Responsive Media Queries
+   ======================= */
+@media (max-width: 768px) {
+  .quiz-container {
+    padding: 15px;
+  }
+
+  button {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  #answers button {
+    width: 90%;
+  }
+
+  #result img {
+    max-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  button {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  #result img {
+    max-width: 100px;
+  }
+}
+
