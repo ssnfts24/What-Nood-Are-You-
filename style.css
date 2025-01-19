@@ -1,8 +1,8 @@
-/* =======================
+/* ======================= 
    General Page Styling
    ======================= */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
   background: linear-gradient(145deg, #121212, #2A2A2A);
   color: #FFD700;
   margin: 0;
@@ -11,7 +11,17 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  overflow: hidden; /* Prevents scroll for a fixed viewport */
+  overflow: hidden;
+  animation: backgroundAnim 10s infinite alternate;
+}
+
+@keyframes backgroundAnim {
+  from {
+    background: linear-gradient(145deg, #121212, #2A2A2A);
+  }
+  to {
+    background: linear-gradient(145deg, #1E1E1E, #3A3A3A);
+  }
 }
 
 /* =======================
@@ -19,13 +29,18 @@ body {
    ======================= */
 .quiz-container {
   text-align: center;
-  background: #2A2A2A;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(145deg, #2A2A2A, #3A3A3A);
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
   max-width: 600px;
   width: 90%;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.quiz-container:hover {
+  transform: scale(1.02);
 }
 
 /* =======================
@@ -34,9 +49,9 @@ body {
 .progress-container {
   width: 100%;
   background: #444;
-  border-radius: 10px;
-  height: 10px;
-  margin-bottom: 10px;
+  border-radius: 15px;
+  height: 12px;
+  margin-bottom: 15px;
   overflow: hidden;
   position: relative;
 }
@@ -44,35 +59,37 @@ body {
 #progress-bar {
   width: 0;
   height: 100%;
-  background: #FF4500;
+  background: linear-gradient(145deg, #FF4500, #FF6347);
   transition: width 0.3s ease;
 }
 
 #progress-text {
-  margin-top: 0px;
+  margin-top: 5px;
   font-size: 14px;
   color: #FFD700;
+  text-shadow: 1px 1px 3px #000;
 }
 
 /* =======================
    Buttons
    ======================= */
 button {
-  padding: 10px 20px;
+  padding: 12px 25px;
   font-size: 16px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   background-color: #FF4500;
   color: white;
   margin: 10px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
 }
 
 button:hover {
   background-color: #FF6347;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(255, 99, 71, 0.8);
 }
 
 button:disabled {
@@ -92,12 +109,14 @@ button:disabled {
   background-color: #444;
   color: #FFD700;
   border: 2px solid #FFD700;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 #answers button:hover {
   background-color: #FFD700;
   color: #2A2A2A;
+  transform: scale(1.03);
 }
 
 #answers button.selected {
@@ -111,15 +130,16 @@ button:disabled {
    Result Section
    ======================= */
 #result img {
-  max-width: 150px;
+  max-width: 180px;
   margin-top: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s ease;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 #result img:hover {
   transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.8);
 }
 
 /* =======================
@@ -184,7 +204,7 @@ button:disabled {
    ======================= */
 @media (max-width: 768px) {
   .quiz-container {
-    padding: 15px;
+    padding: 20px;
   }
 
   button {
@@ -197,7 +217,7 @@ button:disabled {
   }
 
   #result img {
-    max-width: 120px;
+    max-width: 140px;
   }
 }
 
@@ -208,7 +228,6 @@ button:disabled {
   }
 
   #result img {
-    max-width: 100px;
+    max-width: 120px;
   }
 }
-
