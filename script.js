@@ -36,7 +36,7 @@ const questions = [
     },
   },
   {
-    question: "What kind of environment do you feel most at home in?",
+    question: "Which environment feels like home?",
     answers: {
       Volcano: "Fire Nood",
       Forest: "Earth Nood",
@@ -44,28 +44,6 @@ const questions = [
       Ocean: "Water Nood",
       Sky: "Air Nood",
       Meadow: "Light Nood",
-    },
-  },
-  {
-    question: "What is your favorite time of day?",
-    answers: {
-      Dawn: "Light Nood",
-      Noon: "Air Nood",
-      Sunset: "Water Nood",
-      Night: "Shadow Nood",
-      Afternoon: "Fire Nood",
-      Morning: "Earth Nood",
-    },
-  },
-  {
-    question: "Which trait do you value most in others?",
-    answers: {
-      Courage: "Fire Nood",
-      Stability: "Earth Nood",
-      Mystery: "Shadow Nood",
-      Compassion: "Water Nood",
-      Curiosity: "Air Nood",
-      Optimism: "Light Nood",
     },
   },
 ];
@@ -84,21 +62,21 @@ let results = {
 };
 
 const funFacts = {
-  "Fire Nood": "Fire Noods are fierce and powerful, representing passion and transformation.",
-  "Earth Nood": "Earth Noods are strong and grounded, embodying stability and resilience.",
-  "Shadow Nood": "Shadow Noods are strategic and mysterious, thriving in complexity and subtlety.",
-  "Water Nood": "Water Noods are adaptive and empathetic, flowing gracefully through challenges.",
-  "Air Nood": "Air Noods are free-spirited and imaginative, soaring above limitations.",
-  "Light Nood": "Light Noods are radiant and optimistic, bringing hope and inspiration.",
+  "Fire Nood": "Fire Noods are passionate and energetic.",
+  "Earth Nood": "Earth Noods are grounded and dependable.",
+  "Shadow Nood": "Shadow Noods are mysterious and insightful.",
+  "Water Nood": "Water Noods are adaptable and empathetic.",
+  "Air Nood": "Air Noods are creative and free-spirited.",
+  "Light Nood": "Light Noods are optimistic and uplifting.",
 };
 
 const imageUrls = {
-  "Fire Nood": "https://freenudessol.wordpress.com/wp-content/uploads/2025/01/firefly-a-cartoon-inspired-2d-illustration-of-a-green-bird-like-character-the-common-fire-nood-4.jpg?resize=160%2C160",
-  "Earth Nood": "https://freenudessol.wordpress.com/wp-content/uploads/2025/01/firefly-a-cartoon-inspired-2d-illustration-of-a-green-bird-like-character-the-common-earth-nood-2025-01-07t164839.280.jpg?resize=160%2C160",
-  "Shadow Nood": "https://freenudessol.wordpress.com/wp-content/uploads/2025/01/firefly-a-cartoon-inspired-2d-illustration-of-a-green-bird-like-character-the-common-shadow-nood-2.jpg?resize=160%2C160",
-  "Water Nood": "https://freenudessol.wordpress.com/wp-content/uploads/2025/01/firefly-a-cartoon-inspired-2d-illustration-of-a-green-bird-like-character-the-common-water-nood.jpg?resize=160%2C160",
-  "Air Nood": "https://freenudessol.wordpress.com/wp-content/uploads/2025/01/firefly-a-cartoon-inspired-2d-illustration-of-a-somewhat-short-green-bird-like-character-the-comm-3.jpg?resize=160%2C160",
-  "Light Nood": "https://freenudessol.wordpress.com/wp-content/uploads/2025/01/firefly-a-cartoon-inspired-2d-illustration-of-a-bright-green-bird-like-character-the-common-light-2.jpg?resize=160%2C160",
+  "Fire Nood": "https://example.com/fire.jpg",
+  "Earth Nood": "https://example.com/earth.jpg",
+  "Shadow Nood": "https://example.com/shadow.jpg",
+  "Water Nood": "https://example.com/water.jpg",
+  "Air Nood": "https://example.com/air.jpg",
+  "Light Nood": "https://example.com/light.jpg",
 };
 
 /*********************************************
@@ -110,12 +88,11 @@ function loadQuestion() {
   const answersElement = document.getElementById("answers");
   answersElement.innerHTML = "";
 
-  // Generate answer buttons
   for (const [key, value] of Object.entries(questionData.answers)) {
     const button = document.createElement("button");
     button.textContent = key;
     button.className = "answer-btn";
-    button.onclick = (event) => selectAnswer(event, value);
+    button.onclick = () => selectAnswer(value);
     answersElement.appendChild(button);
   }
 
@@ -123,13 +100,9 @@ function loadQuestion() {
   updateProgress();
 }
 
-function selectAnswer(event, noodType) {
+function selectAnswer(noodType) {
   results[noodType]++;
   document.getElementById("next-btn").disabled = false;
-
-  // Highlight the selected button
-  document.querySelectorAll(".answer-btn").forEach((btn) => btn.classList.remove("selected"));
-  event.target.classList.add("selected");
 }
 
 function nextQuestion() {
@@ -147,14 +120,10 @@ function updateProgress() {
   document.getElementById("progress-text").textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
 }
 
-/*********************************************
- *        DISPLAY RESULTS
- *********************************************/
 function showResult() {
   const dominantNood = Object.keys(results).reduce((a, b) => (results[a] > results[b] ? a : b));
-
   document.getElementById("nood-result").textContent = dominantNood;
-  document.getElementById("result-description").textContent = `Congratulations! You are a ${dominantNood}, representing its unique qualities.`;
+  document.getElementById("result-description").textContent = `Congratulations! You are a ${dominantNood}.`;
   document.getElementById("result-image").src = imageUrls[dominantNood];
   document.getElementById("fun-facts").textContent = funFacts[dominantNood];
 
@@ -162,22 +131,11 @@ function showResult() {
   document.getElementById("result").style.display = "block";
 }
 
-/*********************************************
- *        RESTART QUIZ
- *********************************************/
 function restartQuiz() {
   currentQuestion = 0;
-  results = {
-    "Fire Nood": 0,
-    "Earth Nood": 0,
-    "Shadow Nood": 0,
-    "Water Nood": 0,
-    "Air Nood": 0,
-    "Light Nood": 0,
-  };
-
-  document.getElementById("result").style.display = "none";
+  Object.keys(results).forEach((key) => (results[key] = 0));
   document.getElementById("quiz").style.display = "block";
+  document.getElementById("result").style.display = "none";
   loadQuestion();
 }
 
